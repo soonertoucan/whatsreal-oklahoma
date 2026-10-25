@@ -11,10 +11,20 @@ assets/app.js         rendering, priority picker, charts, countdown, voting plan
 data/facts.js         THE FACT LEDGER. Every stat, with tier, source, date.
 data/candidates.js    races, candidates, positions (vote / statement / none), state questions, H.R. 1 panel
 data/record.js        THE RECORD: documented conduct (convictions, audits, rulings, votes), outcome rankings, direct-vote history
+data/votes.js         OFFICIAL ROLL CALLS for the state bills behind the record, plus current House/Senate rosters by district
 RESEARCH.md           the research behind the site, with sources and caveats
 ```
 
-## Deploy
+## Where it lives
+
+- Live site (Vercel): https://whatsreal-oklahoma.vercel.app
+- Mirror (GitHub Pages): https://soonertoucan.github.io/whatsreal-oklahoma/
+- Source and data: https://github.com/soonertoucan/whatsreal-oklahoma
+
+To publish a change: edit, commit, `git push`, then `npx vercel deploy --prod --yes` from this folder.
+GitHub Pages rebuilds from `main` on its own within a few minutes.
+
+## Deploy elsewhere
 
 Any static host works. Fastest options:
 
@@ -69,6 +79,16 @@ The footer says the site "is not paid for by any candidate, party or committee."
 ever changes, change the footer the same day. Oklahoma's Ethics Commission rules on
 electioneering communications may apply once you spend money promoting the site; check
 `ethics.ok.gov` before buying ads.
+
+## Roll calls (data/votes.js)
+
+Each bill lists its final-passage roll call per chamber with names exactly as the
+Legislature prints them (surname, plus an initial in parentheses where two members share
+a surname). Every list was counted against the official tally. The rosters map district
+to member with `aliases`; `{n, from}` means that surname belonged to someone else before
+`from`, so older votes are not misattributed. To add a bill: copy the names from the
+official `_VOTES.HTM` page linked on the bill's page at oklegislature.gov, then run the
+validator in RESEARCH.md section 9 (tally match, no duplicates, no ambiguous aliases).
 
 ## Fixing a fact
 

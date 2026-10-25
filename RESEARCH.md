@@ -227,6 +227,47 @@ down-ballot statewide nominees other than Corporation Commission (Ballotpedia re
 empty body; Wikipedia's executive section was unreadable); an Oklahoma-specific measured
 effect of the abortion ban on OB-GYN supply (only association-level reporting exists).
 
+## 9. Legislature roll calls (added October 25, 2026)
+
+Source for every roll call: the Oklahoma Legislature's official vote pages
+(oklegislature.gov, "SUPPORT DOCUMENTS/votes/<Chamber>/<BILL>_VOTES.HTM"), reached from each
+bill's BillInfo page. LegiScan returned 403 to automated fetch and was not used. Each name
+list was counted against the printed tally and against the bill-history entry.
+
+| Bill | What | House | Senate |
+|---|---|---|---|
+| HB 2764 (2025) | Income tax cut 4.75→4.5%, triggers to zero | 74–19, May 20, 2025 | 34–11, May 22, 2025 |
+| SB 1027 (2025) | Petition signature caps | 69–23, May 7, 2025 | 39–7, May 21, 2025 (4th reading) |
+| SJR 50 (2026) | Medicaid expansion back to ballot (House-amended) | 69–18, May 7, 2026 | no vote on the amended version (45–0 was the pre-amendment shell) |
+| HB 4440 (2026) | Same purpose, earlier vehicle | 77–20, Mar 25, 2026 | 30–8, Apr 14, 2026 |
+| HB 1934 (2023) | Created Parental Choice Tax Credit | 61–31, May 2, 2023 (4th reading) | 36–10, Apr 27, 2023 |
+| HB 3705 (2026) | PCTC cap to $275M | 70–19, Apr 9, 2026 | 39–9, Apr 27, 2026 |
+| SB 1050 (2021) | Winter storm ratepayer bonds | 78–17, Apr 20, 2021 | 42–4, Apr 15, 2021 |
+| HB 1955 (2023–24) | Grocery tax eliminated | 88–7, Mar 21, 2023 | 42–2, Feb 22, 2024 |
+| SB 201 (2026) | $2,000 teacher pay floor | 92–1, Apr 28, 2026 | 47–0, May 4, 2026 (4th reading) |
+
+Rosters: Wikipedia member tables for the Oklahoma House and Senate (last edited Oct 4–5,
+2026); okhouse.gov and oksenate.gov would not serve to automated fetch. Vacancies: HD 77
+(Waldron), HD 99 (Pittman), SD 24 (Weaver). Even-numbered Senate districts and all House
+seats are on the Nov 3, 2026 ballot. Rows 8–48 of the Senate roster and 6–101 of the
+House roster came from a model-extracted summary of the Wikipedia tables rather than
+verbatim text; spot-check against the official sites before relying on an individual row.
+
+Alias handling, so old votes are not misattributed: "Mr. Speaker" = Hilbert from 2025,
+McCall before; "Hardin" = David Hardin from 2023 (Tommy Hardin earlier); "Roberts" = Eric
+Roberts from 2023; "Lowe" = Dick Lowe from 2026 ("Lowe (D)" earlier; Jason Lowe left);
+"Standridge" = Lisa Standridge from 2025 (Rob Standridge earlier); "Thompson" (Senate) =
+Kristen Thompson from 2025 (Roger Thompson earlier); "Stewart" (Senate) = Jack Stewart from
+2023; "Green" = Grant Green from 2023; "Goodwin"/"Frix" in the Senate from 2025 only (both
+were House members earlier); "Brooks" = Brooks-Jimenez; "Dossett"/"Dossett, J.A." = Jo
+Anna Dossett.
+
+Validator (run from the repo root):
+node -e "global.window={};for(const f of ['data/facts.js','data/candidates.js','data/record.js','data/votes.js'])eval(require('fs').readFileSync(f,'utf8'));/* see README */"
+The session's validator reported: tallies match name lists for all 17 roll calls, no
+duplicate names, no ambiguous alias matches, unresolved names only for members who have
+since left (Waldron, Pittman, Bennett, Ty Burns, Weaver) or pre-2025 sessions.
+
 ## Corrections log
 
 (none yet)

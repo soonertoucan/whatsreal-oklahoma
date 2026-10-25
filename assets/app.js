@@ -8,7 +8,7 @@
 
   /* ---------- Config ---------- */
   var CONTACT = "";                                   // e.g. "corrections@whatsrealok.org". Empty hides the line.
-  var SITE_URL = "";                                  // set after deploy so copied snippets link back here
+  var SITE_URL = "https://whatsreal-oklahoma.vercel.app";   // copied snippets link back here
   var TZ_CDT = "-05:00", TZ_CST = "-06:00";           // Oklahoma: DST ends Nov 1, 2026
   var EARLY_START = new Date("2026-10-28T08:00:00" + TZ_CDT);
   var EARLY_END   = new Date("2026-10-31T14:00:00" + TZ_CDT);
