@@ -1,0 +1,274 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="claude:viewport-fit-sides" content="cover">
+<title>What's Real Oklahoma</title>
+<meta name="description" content="Oklahoma's numbers from government records, and where the people on your November 3 ballot stand. Every line has its source next to it.">
+<meta property="og:title" content="What's Real Oklahoma">
+<meta property="og:description" content="Before you vote, see what's real. Oklahoma data with sources, and where each candidate stands on what matters to you.">
+<meta property="og:type" content="website">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400;1,6..72,500&family=Public+Sans:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="assets/styles.css">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="wrap">
+    <a class="brand" href="#top">What's <em>Real</em></a>
+    <nav class="nav" aria-label="Sections">
+      <a href="#start">Start here</a>
+      <a href="#gap">What we get</a>
+      <a href="#numbers">The numbers</a>
+      <a href="#record">The record</a>
+      <a href="#legislators">Your legislators</a>
+      <a href="#ballot">Your ballot</a>
+      <a href="#case">Our conclusion</a>
+      <a href="#talk">Talking about it</a>
+      <a href="#vote">Vote</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+
+  <section class="hero">
+    <div class="wrap">
+      <p class="live" id="live" aria-live="polite"><span class="pip" aria-hidden="true"></span><span>Loading election dates</span></p>
+      <h1>Before you vote, see what's <span class="real">real</span>.</h1>
+      <p class="lede">Oklahoma's numbers, pulled from government records. What the people on your ballot have <b>voted for</b> and <b>said</b>, with the source next to every line. No pundits, no feed, no party paying for it. Pick what matters to your family and your town, and judge for yourself.</p>
+      <div class="hero-actions">
+        <a class="btn" href="#start">Start with what matters to you</a>
+        <a class="btn ghost" href="#ballot">See who is on my ballot</a>
+      </div>
+      <p class="checked">Every fact on this page was last checked <span data-checked></span>. Sources are linked. If one is wrong, the footer says how to tell us.</p>
+    </div>
+  </section>
+
+  <section class="section band" id="start">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>Start with your own town</h2>
+        <p class="intro">Pick up to three things you want for your family and your community. You will get the data that bears on each one, and what each candidate on your ballot has done or said about it. Nothing is scored. You decide.</p>
+      </div>
+      <div class="chips" id="chips" role="group" aria-label="What matters most to you"></div>
+      <div class="picker-foot">
+        <label for="district">Your congressional district</label>
+        <select id="district" aria-label="Your congressional district"></select>
+        <a href="https://okvoterportal.okelections.us/" target="_blank" rel="noopener">Not sure? Look it up on the OK Voter Portal</a>
+      </div>
+      <div class="results" id="results" aria-live="polite"></div>
+    </div>
+  </section>
+
+  <section class="section" id="gap">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>What Oklahoma gets</h2>
+        <p class="intro">Oklahoma has been governed by one party in every statewide office and both legislative chambers since 2011. These are the scorecards independent groups keep. They are not opinions about anyone's values. They are what the policies have produced.</p>
+      </div>
+      <div class="outcomes" id="outcomes"></div>
+      <div class="direct-wrap">
+        <h3>When Oklahomans decide for themselves</h3>
+        <p class="minor measure">When the question goes straight to voters, Oklahomans tend to vote for their own hospitals and their own paychecks. What happens next is the part to watch.</p>
+        <div class="direct" id="direct"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section band" id="numbers">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>The numbers</h2>
+        <p class="intro">Each entry says what kind of source it comes from. Government records come first. Where a news organization's reporting is the only public record, the entry says so. Every entry has a copy button so you can paste it, with its source, into a text or a Facebook thread.</p>
+      </div>
+
+      <div class="figures" id="figures"></div>
+
+      <div class="tabs" id="tabs" role="tablist" aria-label="Topics"></div>
+      <div class="ledger" id="ledger"></div>
+    </div>
+  </section>
+
+  <section class="section" id="record">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>The record</h2>
+        <p class="intro">What the people who run Oklahoma have done with the office. The bar for this list is a conviction, a plea, an indictment, an audit, a court ruling, an ethics-commission action, a roll-call vote, or an official spending record. Where someone was cleared, it says so. Where a Democrat belongs on the list, they are on it.</p>
+      </div>
+      <div class="ledger" id="recordlist"></div>
+    </div>
+  </section>
+
+  <section class="section band" id="legislators">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>How your legislators voted</h2>
+        <p class="intro">Every Oklahoma House seat and the even-numbered Senate districts are on the November 3 ballot. Pick your districts and see how the people who hold them voted on the bills behind the numbers above. Votes are copied from the Legislature's official roll calls, linked on each line. Find your districts on the OK Voter Portal.</p>
+      </div>
+      <div class="select-row">
+        <label for="hd">House district</label>
+        <select id="hd" aria-label="House district"></select>
+        <label for="sd">Senate district</label>
+        <select id="sd" aria-label="Senate district"></select>
+        <a href="https://okvoterportal.okelections.us/" target="_blank" rel="noopener">Look up my districts</a>
+      </div>
+      <div class="legis-grid" id="legis"></div>
+      <p class="minor" style="margin-top:1.25rem">Legend: a name marked † no longer serves in the Legislature. "Not yet in office" means the member was not serving when that vote was taken. Roll calls: <span id="bill-links"></span>.</p>
+    </div>
+  </section>
+
+  <section class="section band" id="ballot">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>Who is on your ballot</h2>
+        <p class="intro">A recorded vote is the strongest evidence of what someone will do. A campaign statement is the next best. Where we found no verified position, we say so instead of guessing. Candidates' own sites are linked so you can check us.</p>
+      </div>
+      <div id="races"></div>
+    </div>
+  </section>
+
+  <section class="section" id="hr1">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>What one vote did to Oklahoma</h2>
+        <p class="intro">Most of the numbers on this page trace back to a single federal law passed in July 2025. Here is what it does in Oklahoma terms, and who from Oklahoma voted for it. Some of it helps farmers and taxpayers. Some of it closes hospitals. Weigh it yourself.</p>
+      </div>
+      <div class="hr1" id="hr1panel"></div>
+    </div>
+  </section>
+
+  <section class="section case" id="case">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>Our conclusion</h2>
+        <p class="intro">Everything above this line is evidence. This section is what we make of it. It is labeled so you can skip it, argue with it, or check it line by line. You will not find a number here that is not sourced above.</p>
+      </div>
+      <div class="case-body measure">
+        <p>Oklahoma is not a poor state because Oklahomans do not work. It is 45th in health, 48th in education and last in turnout because, for fifteen years, the people elected to run it have spent the money and the attention somewhere other than the hospital, the school and the paycheck. The record above shows where: a $4.7 million restaurant fraud under a no-bid state contract, $31 million in questioned pandemic school funds, $3 million for classroom Bibles, $252 million a year in private-school credits for families who were already there, and $3.2 billion in storm bonds on your electric bill for the next 25 years. None of that was a Democrat's doing. There has not been one in charge.</p>
+        <p>Then came the federal law every Oklahoma Republican in Congress voted for. It takes $6.7 billion from the state's Medicaid program while 63 of 73 rural hospitals are already at risk, hands the state a $240 million-a-year SNAP bill, and lets your health premiums rise 20% this year and 15 to 22% next. The men who cast those votes are on your ballot. Their challengers opposed the law. That is the clearest choice on the page.</p>
+        <p>For governor, the two candidates agree on very little and the disagreement is about money. Mike Mazzei would eliminate the state's largest revenue source in the same years the federal money disappears, keep the private-school credit, and has stated no position on the Medicaid expansion that covers 237,525 working adults. Cyndi Munson would keep the expansion in the constitution, end the private-school credit and send the money to public schools, pause the data centers that are driving your utility bill, and aim tax relief at the sales-tax and earned-income credits that reach a $25,000 family instead of $21 a year. On the evidence of what the last fifteen years produced, we think Munson is the vote for anyone whose family depends on a rural hospital, a public school, SoonerCare, or a paycheck under $100,000. If you earn well over that and send your children to private school, the arithmetic may run the other way, and the page shows you that too.</p>
+        <p>For Corporation Commission, the office that approved the storm bonds and will decide who pays for the data centers' grid, Rhonda Eastman would stop and study. Brad Boles would do what the Legislature tells him. The Legislature has not told him anything yet. In the 5th District, Jena Nelson has published positions on the cost of living, Medicare and schools and asked for four debates; Stephanie Bice voted for the law and declined all four. In the 1st District, John Croisant opposed the law; Mark Tedford has no federal record to judge. In Districts 2, 3 and 4 and the Senate race the incumbents' yes votes are the evidence, and the challengers have published little. Decide whether that vote is one you want cast again.</p>
+        <p>On the two state questions: 847 caps the property revenue that funds your school and county and does not promise to lower your bill. 845 removes the party-balance rule from the panel that picks your judges. Both move power away from local people and toward the Capitol. We would vote no on both.</p>
+        <p>None of this asks you to change what you believe about God, family or the country. It asks you to look at the bill. Honest weights are a moral issue too.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section band" id="method">
+    <div class="wrap method">
+      <div>
+        <p class="epigraph">A false balance is abomination to the Lord: but a just weight is his delight.<small>Proverbs 11:1</small></p>
+      </div>
+      <div class="measure">
+        <h2 style="font-size:1.75rem;margin-bottom:1rem">Honest scales</h2>
+        <p>We are Oklahomans. We built this because the people we love are getting their news from a phone that is paid to make them angry, and we think they deserve better than that. We think rural people and church people can handle the plain truth and decide for themselves what is good for their own families. So this page has rules.</p>
+        <p style="margin-top:1rem">Every number comes with its source. Every claim about a candidate comes from a recorded vote or the candidate's own words. Where the other side has an answer, we print it. Where we could not verify something, we say so. If a number here is wrong, we will fix it and say that we did.</p>
+        <div class="tiers" style="margin-top:1.5rem">
+          <div><span class="tier tier-record">Government record</span><span>Bureau of Labor Statistics, Energy Information Administration, Oklahoma Health Care Authority, Oklahoma Insurance Department, House Clerk roll calls, court orders, the State Election Board.</span></div>
+          <div><span class="tier tier-analysis">Independent analysis</span><span>Hospital, education and budget research groups that publish their methods. We name them so you can judge them.</span></div>
+          <div><span class="tier tier-campaign">Candidate's own words</span><span>Campaign sites, forums, interviews. Linked so you can read the whole thing.</span></div>
+          <div><span class="tier tier-report">News report</span><span>Used only when a newsroom's reporting is the only public record. Labeled so you know.</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="talk">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>Talking about it with people you love</h2>
+        <p class="intro">Nobody has ever been argued out of a belief by being told they are blind. Researchers have spent fifteen years measuring what actually moves people in political conversations. It is slower and kinder than a Facebook argument, and it works. Here is what the studies found.</p>
+      </div>
+      <div class="guide">
+        <div class="tip">
+          <h4>Ask first. Then listen longer than feels comfortable.</h4>
+          <p>Ten-minute conversations in which canvassers asked people about their own lives and listened without judging changed views on contentious issues, and the change was still measurable three months later. Conversations that only delivered talking points changed nothing.</p>
+          <p class="cite">Broockman and Kalla, <a href="https://doi.org/10.1126/science.aad9713" target="_blank" rel="noopener">Science, 2016</a>; Kalla and Broockman, <a href="https://doi.org/10.1017/S0003055419000923" target="_blank" rel="noopener">American Political Science Review, 2020</a>.</p>
+        </div>
+        <div class="tip">
+          <h4>Speak to their values, not yours.</h4>
+          <p>Arguments framed in the listener's own moral language (loyalty, faith, family, fairness to people who work hard, care for the sick) are far more persuasive than the same argument in the speaker's language. A hospital closing is a question of caring for your neighbor. A SNAP bill handed to the state is a question of who pays.</p>
+          <p class="cite">Feinberg and Willer, <a href="https://doi.org/10.1177/0146167215607842" target="_blank" rel="noopener">Personality and Social Psychology Bulletin, 2015</a>.</p>
+        </div>
+        <div class="tip">
+          <h4>Facts do not backfire. Contempt does.</h4>
+          <p>A study of more than 10,000 people across 52 issues found that correcting a false belief almost never makes people cling to it harder. What shuts a conversation down is feeling looked down on. Bring the number and the source. Leave the word "blind" at home.</p>
+          <p class="cite">Wood and Porter, <a href="https://doi.org/10.1007/s11109-018-9443-y" target="_blank" rel="noopener">Political Behavior, 2019</a>.</p>
+        </div>
+        <div class="tip">
+          <h4>Make it about their hospital, their school, their co-op.</h4>
+          <p>People weigh what they can see. Which hospital would they drive to if the nearest one closed? Who in church is on SoonerCare? What did diesel cost at wheat harvest? The entries on this page have a copy button so you can hand someone the number and the source, not your opinion.</p>
+        </div>
+        <div class="tip">
+          <h4>Ask them when and where they will vote.</h4>
+          <p>Asking people to say out loud what time they will vote, where, and how they will get there raised turnout by several points in a controlled study. It beat every other message tested. Early voting in Oklahoma runs Wednesday through Saturday. Ask which day.</p>
+          <p class="cite">Nickerson and Rogers, <a href="https://doi.org/10.1177/0956797609359326" target="_blank" rel="noopener">Psychological Science, 2010</a>.</p>
+        </div>
+        <div class="tip">
+          <h4>One honest conversation beats a hundred shares.</h4>
+          <p>Across dozens of field experiments, ads and mailers in general elections moved vote choice by close to nothing. What moved people was a person they knew, talking with them about something that touched their own life. You are the thing that works.</p>
+          <p class="cite">Kalla and Broockman, <a href="https://doi.org/10.1017/S0003055417000363" target="_blank" rel="noopener">American Political Science Review, 2018</a>.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section band" id="vote">
+    <div class="wrap vote-grid">
+      <div>
+        <div class="section-head">
+          <h2>How to vote in Oklahoma</h2>
+          <p class="intro">Registration for this election closed October 9. If you are registered, you can still vote early, by mail if you already requested a ballot, or on Election Day. Bring a photo ID or your voter ID card.</p>
+        </div>
+        <div class="dates" id="dates"></div>
+        <div class="links">
+          <a href="https://okvoterportal.okelections.us/" target="_blank" rel="noopener">OK Voter Portal: check your registration, find your polling place, see your sample ballot</a>
+          <a href="https://oklahoma.gov/elections.html" target="_blank" rel="noopener">Oklahoma State Election Board</a>
+          <a href="https://okpolicy.org/november2026elections/" target="_blank" rel="noopener">Oklahoma Policy Institute: what is on the November 3 ballot</a>
+          <a href="https://www.vote411.org/oklahoma" target="_blank" rel="noopener">Vote411 (League of Women Voters): candidate questionnaires</a>
+        </div>
+      </div>
+      <form class="plan" id="plan" autocomplete="off">
+        <h3>Make your plan</h3>
+        <p class="minor">People who write down when and where they will vote are several points more likely to actually do it. This stays on your phone. It is not sent anywhere.</p>
+        <label>Which day will you vote?
+          <input id="plan-day" name="day" type="text" placeholder="Saturday morning, early voting">
+        </label>
+        <label>Where?
+          <input id="plan-where" name="where" type="text" placeholder="County election board, or my precinct on Tuesday">
+        </label>
+        <label>Who is going with you?
+          <input id="plan-who" name="who" type="text" placeholder="Mom and I, after church">
+        </label>
+        <div class="foot">
+          <button class="btn small" type="submit">Save my plan</button>
+          <button class="btn small ghost" type="button" id="plan-copy">Copy to send to someone</button>
+          <span id="plan-status"></span>
+        </div>
+      </form>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <p><strong>What's Real</strong> is written and maintained by Oklahomans. It is not paid for by any candidate, party or committee. The section marked "Our conclusion" is our opinion; everything else is sourced record. Facts last checked <span data-checked></span>.</p>
+    <p class="fine">Corrections: every entry on this page links to its source. If a source has been updated or a number is wrong, the data files for this site are public and the footer of the project README explains how to submit a fix. We print corrections and say what changed.</p>
+    <p class="fine" id="contact-line" hidden></p>
+  </div>
+</footer>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script src="data/facts.js"></script>
+<script src="data/candidates.js"></script>
+<script src="data/record.js"></script>
+<script src="data/votes.js"></script>
+<script src="assets/app.js"></script>
+</body>
+</html>
