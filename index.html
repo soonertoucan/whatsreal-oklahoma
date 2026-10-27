@@ -21,6 +21,7 @@
     <a class="brand" href="#top">What's <em>Real</em></a>
     <nav class="nav" aria-label="Sections">
       <a href="#start">Start here</a>
+      <a href="#survey">Best interest</a>
       <a href="#gap">What we get</a>
       <a href="#numbers">The numbers</a>
       <a href="#record">The record</a>
@@ -41,7 +42,8 @@
       <h1>Before you vote, see what's <span class="real">real</span>.</h1>
       <p class="lede">Oklahoma's numbers, pulled from government records. What the people on your ballot have <b>voted for</b> and <b>said</b>, with the source next to every line. No pundits, no feed, no party paying for it. Pick what matters to your family and your town, and judge for yourself.</p>
       <div class="hero-actions">
-        <a class="btn" href="#start">Start with what matters to you</a>
+        <a class="btn" href="#survey">Take the 20-question survey</a>
+        <a class="btn ghost" href="#start">Start with what matters to you</a>
         <a class="btn ghost" href="#ballot">See who is on my ballot</a>
       </div>
       <p class="checked">Every fact on this page was last checked <span data-checked></span>. Sources are linked. If one is wrong, the footer says how to tell us.</p>
@@ -61,6 +63,16 @@
         <a href="https://okvoterportal.okelections.us/" target="_blank" rel="noopener">Not sure? Look it up on the OK Voter Portal</a>
       </div>
       <div class="results" id="results" aria-live="polite"></div>
+    </div>
+  </section>
+
+  <section class="section" id="survey">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>In your best interest</h2>
+        <p class="intro" id="survey-lede"></p>
+      </div>
+      <div class="survey" id="survey-box" aria-live="polite"></div>
     </div>
   </section>
 
@@ -269,6 +281,7 @@
 <script src="data/candidates.js"></script>
 <script src="data/record.js"></script>
 <script src="data/votes.js"></script>
+<script src="data/survey.js"></script>
 <script src="assets/app.js"></script>
 </body>
 </html>

@@ -541,4 +541,171 @@
       copyText("My voting plan: " + p.day + ", at " + p.where + ", with " + p.who + ". Want to come? Early voting is Oct 28–31 at the county election board, Election Day is Nov 3. Check your polling place: https://okvoterportal.okelections.us/", e.currentTarget);
     });
   })();
+  /* ---------- In your best interest: 20-question alignment survey ---------- */
+  (function renderSurvey() {
+    var S = window.WR_SURVEY, STANCES = window.WR_STANCES || {}, AXES = window.WR_AXES || {};
+    var box = $("#survey-box"), lede = $("#survey-lede");
+    if (!S || !box) return;
+    lede.textContent = S.intro.lede;
+    var QS = S.questions, N = QS.length;
+    var state = store("wr-survey") || { i: -1, a: {} };   // i: -1 intro, 0..N-1 question, N results
+    function save() { store("wr-survey", state); }
+    function answered(q) { return state.a[q.id]; }
+    function isnt() { return el("p", { class: "isnt" }, [el("strong", { text: "What this is not. " }), S.intro.isnt]); }
+
+    function show() {
+      box.innerHTML = "";
+      if (state.i < 0) return showIntro();
+      if (state.i >= N) return showResults();
+      showQuestion(QS[state.i]);
+    }
+
+    function showIntro() {
+      var done = Object.keys(state.a).length;
+      box.appendChild(el("div", { class: "s-intro" }, [
+        el("p", { class: "s-how" }, ["Twenty questions. The first five are about your life and decide which issues count more for you. The rest ask you to choose between two real positions held by people on your ballot, or to say you are not sure. Nothing you answer leaves this device."]),
+        isnt(),
+        el("div", { class: "s-actions" }, [
+          el("button", { class: "btn", type: "button", text: done ? "Continue (" + done + " of " + N + " answered)" : "Start the 20 questions", onclick: function () { state.i = done ? firstUnanswered() : 0; save(); show(); } }),
+          done ? el("button", { class: "btn ghost", type: "button", text: "See results so far", onclick: function () { state.i = N; save(); show(); } }) : null,
+          done ? el("button", { class: "btn ghost", type: "button", text: "Start over", onclick: reset }) : null
+        ])
+      ]));
+    }
+    function firstUnanswered() { for (var i = 0; i < N; i++) if (!answered(QS[i])) return i; return N; }
+    function reset() { state = { i: 0, a: {} }; save(); show(); }
+    function scrollToBox() { window.scrollTo({ top: box.getBoundingClientRect().top + window.scrollY - 80, behavior: "smooth" }); }
+
+    function showQuestion(q) {
+      var idx = state.i, cur = answered(q);
+      var head = el("div", { class: "s-head" }, [
+        el("div", { class: "s-progress" }, [el("span", { text: "Question " + (idx + 1) + " of " + N }), el("span", { class: "s-topic", text: q.type === "about" ? "About you" : q.topic })]),
+        el("div", { class: "s-bar", role: "progressbar", "aria-valuemin": "0", "aria-valuemax": String(N), "aria-valuenow": String(idx) }, [el("span", { style: "width:" + Math.round((idx / N) * 100) + "%" })])
+      ]);
+      var kids = [head, el("p", { class: "s-q", text: q.text })];
+      if (q.fact) kids.push(el("p", { class: "s-fact", text: q.fact }));
+      var opts = el("div", { class: "s-opts", role: "group", "aria-label": "Answers" });
+      q.options.forEach(function (o, oi) {
+        opts.appendChild(el("button", { class: "s-opt", type: "button", "aria-pressed": cur && cur.o === oi ? "true" : "false", text: o.t, onclick: function () {
+          state.a[q.id] = { o: oi, v: o.v || 0, w: o.w || null, vote: o.vote || null };
+          state.i = idx + 1; save(); show(); scrollToBox();
+        } }));
+      });
+      kids.push(opts);
+      kids.push(el("div", { class: "s-nav" }, [
+        el("button", { class: "btn ghost small", type: "button", text: idx === 0 ? "Back to intro" : "Back", onclick: function () { state.i = idx - 1; save(); show(); } }),
+        el("button", { class: "btn ghost small", type: "button", text: "Skip this one", onclick: function () { delete state.a[q.id]; state.i = idx + 1; save(); show(); scrollToBox(); } })
+      ]));
+      box.appendChild(el("div", { class: "s-card" }, kids));
+    }
+
+    /* ---- Scoring ---- */
+    function weights() {
+      var w = {}, notes = [];
+      Object.keys(AXES).forEach(function (k) { w[k] = 1; });
+      QS.filter(function (q) { return q.type === "about"; }).forEach(function (q) {
+        var a = answered(q); if (!a || !a.w || !S.weights[a.w]) return;
+        var rule = S.weights[a.w]; notes.push(rule.label);
+        rule.axes.forEach(function (k) { w[k] = (w[k] || 1) * rule.mult; });
+      });
+      return { w: w, notes: notes };
+    }
+    function userAxes() {
+      var u = {};
+      QS.filter(function (q) { return q.type === "issue"; }).forEach(function (q) { var a = answered(q); if (a && a.v) u[q.axis] = { v: a.v, q: q, a: a }; });
+      return u;
+    }
+    function scoreCandidate(c, u, w) {
+      var st = STANCES[c.name] || {}, rows = [], agreeW = 0, totalW = 0, agreeN = 0, compN = 0, none = [];
+      Object.keys(u).forEach(function (k) {
+        var s = st[k];
+        if (!s) { none.push(AXES[k] || k); return; }
+        var agree = (s.v > 0) === (u[k].v > 0); compN++; totalW += w[k];
+        if (agree) { agreeN++; agreeW += w[k]; }
+        rows.push({ axis: k, agree: agree, s: s, you: u[k].q.options[u[k].a.o].t });
+      });
+      return { c: c, rows: rows, none: none, agreeN: agreeN, compN: compN, pct: totalW ? Math.round((agreeW / totalW) * 100) : null, hasAny: !!(c.positions && c.positions.length) };
+    }
+    function racesOnBallot() {
+      var out = [], dsel = $("#district");
+      RACES.forEach(function (r) {
+        var cands = r.candidates, label = r.office;
+        if (r.districts) { var d = r.districts.filter(function (x) { return dsel && x.id === dsel.value; })[0] || r.districts[0]; cands = d.candidates; label = r.office + ", " + d.label; }
+        out.push({ id: r.id, label: label, cands: cands });
+      });
+      return out;
+    }
+    function rank(a, b) { return (b.pct === null ? -1 : b.pct) - (a.pct === null ? -1 : a.pct) || b.compN - a.compN; }
+
+    function showResults() {
+      var u = userAxes(), W = weights(), w = W.w, nIssues = Object.keys(u).length;
+      var kids = [el("div", { class: "s-head" }, [el("div", { class: "s-progress" }, [el("span", { text: "Your results" }), el("span", { class: "s-topic", text: nIssues + " issue answers counted" })])])];
+      kids.push(isnt());
+      if (!nIssues) {
+        kids.push(el("p", { class: "s-fact", text: "You answered \"not sure\" or skipped every issue question, so there is nothing to compare. Go back and pick a side on a few." }));
+      } else {
+        if (W.notes.length) kids.push(el("ul", { class: "s-notes" }, W.notes.map(function (n) { return el("li", { text: n }); })));
+        kids.push(el("p", { class: "s-fact" }, ["Showing the U.S. House district you picked in ", el("a", { href: "#ballot", text: "Who is on your ballot" }), ". Candidates are ordered by how often their documented position matched yours, weighted by your first five answers. The number of issues compared matters as much as the percentage."]));
+        racesOnBallot().forEach(function (r) {
+          var scored = r.cands.map(function (c) { return scoreCandidate(c, u, w); }).sort(rank);
+          var block = el("div", { class: "s-race" }, [el("h3", { text: r.label })]);
+          scored.forEach(function (x) { block.appendChild(renderResult(x)); });
+          kids.push(block);
+        });
+      }
+      var sqs = QS.filter(function (q) { return q.type === "sq"; }).map(function (q) {
+        var a = answered(q); if (!a || !a.v) return el("p", { class: "s-sq" }, [el("b", { text: q.topic + ": " }), "you were not sure, so we have nothing to report."]);
+        return el("p", { class: "s-sq" }, [el("b", { text: q.topic + ": " }), "your answer (“" + q.options[a.o].t + "”) lines up with a ", el("strong", { text: a.vote }), " vote. ", el("a", { href: "#ballot", text: "Read both sides" }), "."]);
+      });
+      kids.push(el("div", { class: "s-race" }, [el("h3", { text: "State questions" })].concat(sqs)));
+      kids.push(el("div", { class: "s-actions" }, [
+        el("button", { class: "btn", type: "button", text: "Copy my results to share", onclick: function (e) { copyText(resultsText(u, w), e.currentTarget); } }),
+        el("button", { class: "btn ghost", type: "button", text: "Change my answers", onclick: function () { state.i = 0; save(); show(); } }),
+        el("button", { class: "btn ghost", type: "button", text: "Start over", onclick: reset })
+      ]));
+      kids.push(el("p", { class: "s-foot", text: "Positions come from recorded votes and the candidates' own published statements, each linked above. If we have a position wrong, or you can source one we marked missing, the footer says how to tell us." }));
+      box.appendChild(el("div", { class: "s-card s-results" }, kids));
+    }
+
+    function renderResult(x) {
+      var c = x.c, head = el("div", { class: "s-rhead" }, [
+        el("div", { class: "name" }, [c.name, el("span", { class: "party", text: PARTY[c.party] || c.party })]),
+        el("div", { class: "s-score" }, x.pct === null
+          ? [el("span", { class: "s-pct none", text: x.hasAny ? "Not comparable" : "No record" })]
+          : [el("span", { class: "s-pct", text: x.pct + "%" }), el("span", { class: "s-of", text: "agrees on " + x.agreeN + " of " + x.compN + " issues compared" })])
+      ]);
+      var bar = el("div", { class: "s-meter", "aria-hidden": "true" }, [el("span", { style: "width:" + (x.pct || 0) + "%" })]);
+      var kids = [head, bar];
+      if (x.pct === null) {
+        kids.push(el("p", { class: "s-none", text: x.hasAny ? "We have positions for this candidate, but none on the issues you answered. That is a gap in the record, not a disagreement." : "We found no published positions to verify for this candidate." }));
+      } else {
+        if (x.compN < 2) kids.push(el("p", { class: "s-none", text: "Only one issue compared. Treat this as thin." }));
+        var det = el("details", null, [el("summary", { text: "Why, issue by issue" })]);
+        x.rows.forEach(function (r) {
+          det.appendChild(el("div", { class: "s-row " + (r.agree ? "agree" : "differ") }, [
+            el("div", { class: "s-ax" }, [el("b", { text: AXES[r.axis] || r.axis }), el("span", { class: "s-tag", text: r.agree ? "Matches you" : "Differs" })]),
+            el("div", { class: "s-you", text: "You chose: " + r.you }),
+            el("div", { class: "s-them" }, [el("span", { class: "kind-" + r.s.kind, text: KIND[r.s.kind] + ". " }), r.s.why, " ", el("a", { href: r.s.src, target: "_blank", rel: "noopener", text: "Source" })])
+          ]));
+        });
+        if (x.none.length) det.appendChild(el("p", { class: "s-none", text: "No position on record for: " + x.none.join("; ") + ". Not counted for or against." }));
+        kids.push(det);
+      }
+      return el("div", { class: "s-result" }, kids);
+    }
+
+    function resultsText(u, w) {
+      var lines = ["My results from the In Your Best Interest survey at " + SITE_URL + " (alignment with recorded votes and statements, not a recommendation):"];
+      racesOnBallot().forEach(function (r) {
+        var scored = r.cands.map(function (c) { return scoreCandidate(c, u, w); }).filter(function (x) { return x.pct !== null; }).sort(rank);
+        if (scored.length) lines.push(r.label + ": " + scored.map(function (x) { return x.c.name + " " + x.pct + "% (" + x.agreeN + " of " + x.compN + " issues)"; }).join("; "));
+      });
+      lines.push("Take it yourself: " + SITE_URL + "/#survey");
+      return lines.join("\n");
+    }
+
+    var districtSel2 = $("#district");
+    if (districtSel2) districtSel2.addEventListener("change", function () { if (state.i >= N) show(); });
+    show();
+  })();
 })();

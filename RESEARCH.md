@@ -338,3 +338,11 @@ Persuasion: Broockman & Kalla 2016 (https://doi.org/10.1126/science.aad9713); Ka
 Wood & Porter 2019 (https://doi.org/10.1007/s11109-018-9443-y); Nickerson & Rogers 2010
 (https://doi.org/10.1177/0956797609359326); Kalla & Broockman 2018 (https://doi.org/10.1017/S0003055417000363);
 People's Action (https://peoplesaction.org/with-less-than-two-months-until-the-election-peoples-action-unveils-groundbreaking-study-that-charts-a-path-to-defeat-trump/).
+
+## 10. Survey stances (added Oct 27, 2026)
+Candidate stances in data/survey.js are derived only from positions already on
+the site. Judgment calls to re-check: Brad Boles is scored -1 on "pause data
+centers" because he says the commission should enforce Legislature rules rather
+than pause projects (Oklahoma Voice, Oct 5, 2026); Mike Mazzei has no stance on
+Medicaid expansion in the constitution because none was found; Mark Tedford's
+only stance is a Ballotpedia campaign line on extending federal tax cuts.

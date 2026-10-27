@@ -94,3 +94,13 @@ validator in RESEARCH.md section 9 (tally match, no duplicates, no ambiguous ali
 
 Change the entry, bump `WR_CHECKED`, redeploy, and note the correction in `RESEARCH.md`
 under "Corrections log." Saying what changed is part of the method.
+
+### data/survey.js (In your best interest)
+Twenty questions: five "about you" questions that set weights, thirteen issue
+questions whose two options are real positions held by someone on the ballot,
+and the two state questions. `WR_STANCES` maps each candidate to +1/-1 on each
+issue axis with the kind of evidence (vote or statement), one line of why, and a
+source URL. A candidate with no entry on an axis is "no position on record" and
+is neither credited nor penalized. Rule: every stance must trace to a position
+already in data/candidates.js or to a roll call. Do not infer stances.
+The result is labeled alignment, not a recommendation; keep that wording.

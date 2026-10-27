@@ -387,3 +387,52 @@ footer .fine { color: var(--ink-3); font-size: 0.86rem; max-width: var(--measure
 .lvote .bt { color: var(--ink-2); }
 .lvote .bt b { color: var(--ink); font-weight: 600; }
 @media (max-width: 760px) { .cands div { grid-template-columns: 1fr; } }
+
+/* ---------- In your best interest (survey) ---------- */
+.survey { margin-top: 1.5rem; }
+.s-card { background: var(--surface); border: 1px solid var(--rule); border-radius: 10px; padding: clamp(1.25rem, 1rem + 1.5vw, 2rem); display: grid; gap: 1.1rem; max-width: 46rem; }
+.s-intro { display: grid; gap: 1.1rem; max-width: 46rem; }
+.s-how { font-size: 1.02rem; color: var(--ink-2); max-width: var(--measure); }
+.isnt { background: var(--wheat-soft); border-left: 4px solid var(--wheat); padding: 0.85rem 1rem; border-radius: 0 6px 6px 0; font-size: 0.95rem; color: var(--ink); max-width: var(--measure); }
+.s-actions { display: flex; flex-wrap: wrap; gap: 0.6rem; }
+.s-head { display: grid; gap: 0.5rem; }
+.s-progress { display: flex; justify-content: space-between; gap: 1rem; font-size: 0.86rem; color: var(--ink-3); }
+.s-topic { color: var(--sky); font-weight: 700; }
+.s-bar { height: 6px; background: var(--rule); border-radius: 3px; overflow: hidden; }
+.s-bar span { display: block; height: 100%; background: var(--sky); border-radius: 3px; transition: width 0.3s ease; }
+.s-q { font-family: var(--font-display); font-size: clamp(1.25rem, 1.1rem + 0.8vw, 1.6rem); line-height: 1.3; text-wrap: balance; }
+.s-fact { font-size: 0.95rem; color: var(--ink-2); max-width: var(--measure); }
+.s-opts { display: grid; gap: 0.6rem; }
+.s-opt {
+  cursor: pointer; text-align: left; font: inherit; font-size: 1.02rem; line-height: 1.35; color: var(--ink);
+  background: var(--paper); border: 1.5px solid var(--rule); border-radius: 8px; padding: 0.9rem 1.1rem;
+}
+.s-opt:hover { border-color: var(--sky); }
+.s-opt[aria-pressed="true"] { border-color: var(--wheat); background: var(--wheat-soft); }
+.s-nav { display: flex; justify-content: space-between; gap: 0.6rem; flex-wrap: wrap; }
+.s-notes { padding-left: 1.2rem; font-size: 0.92rem; color: var(--ink-2); display: grid; gap: 0.3rem; }
+.s-race { display: grid; gap: 0.9rem; padding-top: 1rem; border-top: 1px solid var(--rule); }
+.s-race h3 { font-size: 1.2rem; }
+.s-result { display: grid; gap: 0.5rem; background: var(--paper); border: 1px solid var(--rule); border-radius: 8px; padding: 1rem; min-width: 0; }
+.s-rhead { display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; flex-wrap: wrap; }
+.s-rhead .name { font-family: var(--font-display); font-size: 1.3rem; display: flex; gap: 0.6rem; align-items: baseline; flex-wrap: wrap; }
+.s-score { display: flex; align-items: baseline; gap: 0.6rem; flex-wrap: wrap; }
+.s-pct { font-family: var(--font-display); font-size: 1.6rem; font-weight: 500; color: var(--sky); }
+.s-pct.none { font-size: 1rem; color: var(--ink-3); font-family: var(--font-body); font-weight: 600; }
+.s-of { font-size: 0.86rem; color: var(--ink-2); }
+.s-meter { height: 8px; background: var(--rule); border-radius: 4px; overflow: hidden; }
+.s-meter span { display: block; height: 100%; background: var(--sky); border-radius: 4px; }
+.s-none { font-size: 0.9rem; color: var(--ink-3); }
+.s-result details { font-size: 0.92rem; }
+.s-result summary { cursor: pointer; color: var(--sky); font-weight: 600; }
+.s-row { display: grid; gap: 0.2rem; padding-block: 0.6rem; border-top: 1px solid var(--rule); }
+.s-ax { display: flex; gap: 0.6rem; align-items: baseline; flex-wrap: wrap; }
+.s-tag { font-size: 0.78rem; font-weight: 700; padding: 0.05rem 0.45rem; border-radius: 4px; }
+.s-row.agree .s-tag { background: color-mix(in srgb, var(--good) 14%, transparent); color: var(--good); }
+.s-row.differ .s-tag { background: color-mix(in srgb, var(--dirt) 14%, transparent); color: var(--dirt); }
+.s-you { color: var(--ink-2); }
+.s-them .kind-vote { color: var(--sky); font-weight: 700; }
+.s-them .kind-statement { color: var(--ink-3); font-weight: 600; }
+.s-them a { color: var(--ink-3); }
+.s-sq { font-size: 0.95rem; }
+.s-foot { font-size: 0.86rem; color: var(--ink-3); max-width: var(--measure); }
