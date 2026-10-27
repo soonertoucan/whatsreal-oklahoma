@@ -624,7 +624,7 @@
         if (agree) { agreeN++; agreeW += w[k]; }
         rows.push({ axis: k, agree: agree, s: s, you: u[k].q.options[u[k].a.o].t });
       });
-      return { c: c, rows: rows, none: none, agreeN: agreeN, compN: compN, pct: totalW ? Math.round((agreeW / totalW) * 100) : null, hasAny: !!(c.positions && c.positions.length) };
+      return { c: c, rows: rows, none: none, agreeN: agreeN, compN: compN, net: agreeW - (totalW - agreeW), pct: totalW ? Math.round((agreeW / totalW) * 100) : null, hasAny: !!(c.positions && c.positions.length) };
     }
     function racesOnBallot() {
       var out = [], dsel = $("#district");
@@ -635,8 +635,43 @@
       });
       return out;
     }
-    function rank(a, b) { return (b.pct === null ? -1 : b.pct) - (a.pct === null ? -1 : a.pct) || b.compN - a.compN; }
+    /* Rank by net weighted agreement (matches minus differences), so a candidate
+     * who agrees on 4 of 5 outranks one who agrees on 1 of 1. Then by percent, then by evidence. */
+    function rank(a, b) {
+      var an = a.pct === null ? -Infinity : a.net, bn = b.pct === null ? -Infinity : b.net;
+      return bn - an || (b.pct || 0) - (a.pct || 0) || b.compN - a.compN;
+    }
 
+    /* A pick is the top-ranked comparable candidate, unless the runner-up ties on
+     * weighted score and issue count. Fewer than two issues compared is "thin". */
+    function pickFor(scored) {
+      var comp = scored.filter(function (x) { return x.pct !== null; });
+      if (!comp.length) return { kind: "none" };
+      var top = comp[0], next = comp[1];
+      if (next && next.net === top.net && next.pct === top.pct) return { kind: "tie", a: top, b: next };
+      return { kind: "pick", x: top, thin: top.compN < 2 };
+    }
+    function pickLine(p) {
+      if (p.kind === "none") return "No one on record to compare on the issues you answered.";
+      if (p.kind === "tie") return p.a.c.name + " and " + p.b.c.name + " tie on your answers.";
+      return p.x.c.name + " (" + (PARTY[p.x.c.party] || p.x.c.party) + "), agrees on " + p.x.agreeN + " of " + p.x.compN + " issues compared" + (p.thin ? ", which is thin" : "") + ".";
+    }
+    function renderPick(p) {
+      if (p.kind === "none") return el("p", { class: "s-pick none", text: "Suggested pick: none. " + pickLine(p) });
+      if (p.kind === "tie") return el("p", { class: "s-pick" }, [el("b", { text: "Suggested pick: a tie. " }), pickLine(p) + " Open both and see which issues differ."]);
+      return el("p", { class: "s-pick" }, [el("b", { text: "Suggested pick: " + p.x.c.name + ". " }), "Agrees with you on " + p.x.agreeN + " of " + p.x.compN + " issues compared, " + p.x.pct + "% weighted." + (p.thin ? " Only one issue compared, so treat this as thin." : "")]);
+    }
+    function renderSummary(picks) {
+      var rows = picks.map(function (o) {
+        var p = o.pick, who = p.kind === "pick" ? p.x.c.name : p.kind === "tie" ? "Tie: " + p.a.c.name + " / " + p.b.c.name : "No pick";
+        return el("div", { class: "s-sumrow" + (p.kind === "pick" ? "" : " weak") }, [el("span", { class: "s-sumrace", text: o.r.label }), el("span", { class: "s-sumwho", text: who }), el("span", { class: "s-sumwhy", text: p.kind === "pick" ? p.x.agreeN + " of " + p.x.compN + " issues" + (p.thin ? ", thin" : "") : p.kind === "tie" ? "same score" : "nothing on record" })]);
+      });
+      QS.filter(function (q) { return q.type === "sq"; }).forEach(function (q) {
+        var a = answered(q), sure = a && a.v;
+        rows.push(el("div", { class: "s-sumrow" + (sure ? "" : " weak") }, [el("span", { class: "s-sumrace", text: q.topic }), el("span", { class: "s-sumwho", text: sure ? "Vote " + a.vote : "No pick" }), el("span", { class: "s-sumwhy", text: sure ? "matches your answer" : "you were not sure" })]));
+      });
+      return el("div", { class: "s-summary" }, [el("h3", { text: "Your ballot, based on your answers" }), el("div", { class: "s-sumgrid" }, rows), el("p", { class: "s-fact", text: "Each pick is the candidate whose documented positions matched your answers most often. The evidence is under each name below. Where two tie or no one has a record on your issues, we say so instead of guessing." })]);
+    }
     function showResults() {
       var u = userAxes(), W = weights(), w = W.w, nIssues = Object.keys(u).length;
       var kids = [el("div", { class: "s-head" }, [el("div", { class: "s-progress" }, [el("span", { text: "Your results" }), el("span", { class: "s-topic", text: nIssues + " issue answers counted" })])])];
@@ -645,13 +680,17 @@
         kids.push(el("p", { class: "s-fact", text: "You answered \"not sure\" or skipped every issue question, so there is nothing to compare. Go back and pick a side on a few." }));
       } else {
         if (W.notes.length) kids.push(el("ul", { class: "s-notes" }, W.notes.map(function (n) { return el("li", { text: n }); })));
-        kids.push(el("p", { class: "s-fact" }, ["Showing the U.S. House district you picked in ", el("a", { href: "#ballot", text: "Who is on your ballot" }), ". Candidates are ordered by how often their documented position matched yours, weighted by your first five answers. The number of issues compared matters as much as the percentage."]));
+        kids.push(el("p", { class: "s-fact" }, ["Showing the U.S. House district you picked in ", el("a", { href: "#ballot", text: "Who is on your ballot" }), ". Candidates are ordered by matches minus differences on the issues you answered, weighted by your first five answers, so agreeing on 4 of 5 outranks agreeing on 1 of 1."]));
+        var raceBlocks = [], picks = [];
         racesOnBallot().forEach(function (r) {
           var scored = r.cands.map(function (c) { return scoreCandidate(c, u, w); }).sort(rank);
-          var block = el("div", { class: "s-race" }, [el("h3", { text: r.label })]);
+          var pick = pickFor(scored); picks.push({ r: r, pick: pick });
+          var block = el("div", { class: "s-race" }, [el("h3", { text: r.label }), renderPick(pick)]);
           scored.forEach(function (x) { block.appendChild(renderResult(x)); });
-          kids.push(block);
+          raceBlocks.push(block);
         });
+        kids.push(renderSummary(picks));
+        raceBlocks.forEach(function (b) { kids.push(b); });
       }
       var sqs = QS.filter(function (q) { return q.type === "sq"; }).map(function (q) {
         var a = answered(q); if (!a || !a.v) return el("p", { class: "s-sq" }, [el("b", { text: q.topic + ": " }), "you were not sure, so we have nothing to report."]);
@@ -695,11 +734,12 @@
     }
 
     function resultsText(u, w) {
-      var lines = ["My results from the In Your Best Interest survey at " + SITE_URL + " (alignment with recorded votes and statements, not a recommendation):"];
+      var lines = ["My suggested ballot from the In Your Best Interest survey at " + SITE_URL + " (based on which candidates' recorded votes and statements matched my answers):"];
       racesOnBallot().forEach(function (r) {
-        var scored = r.cands.map(function (c) { return scoreCandidate(c, u, w); }).filter(function (x) { return x.pct !== null; }).sort(rank);
-        if (scored.length) lines.push(r.label + ": " + scored.map(function (x) { return x.c.name + " " + x.pct + "% (" + x.agreeN + " of " + x.compN + " issues)"; }).join("; "));
+        var scored = r.cands.map(function (c) { return scoreCandidate(c, u, w); }).sort(rank);
+        lines.push(r.label + ": " + pickLine(pickFor(scored)));
       });
+      QS.filter(function (q) { return q.type === "sq"; }).forEach(function (q) { var a = answered(q); lines.push(q.topic + ": " + (a && a.v ? "vote " + a.vote : "not sure")); });
       lines.push("Take it yourself: " + SITE_URL + "/#survey");
       return lines.join("\n");
     }

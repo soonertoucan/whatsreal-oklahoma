@@ -18,8 +18,8 @@
 window.WR_SURVEY = {
   intro: {
     title: "In your best interest",
-    lede: "Twenty questions about your life and what you want from government. At the end you will see which candidates' recorded votes and public statements line up with your answers, and where they have said nothing we could find.",
-    isnt: "This does not tell you who to vote for. It is not a prediction of who would be a good governor or senator. It scores one thing only: how often a candidate's documented position matches the position you chose. You may care about things we did not ask. A candidate with little on record will score low on coverage, not on disagreement, and we say which is which."
+    lede: "Twenty questions about your life and what you want from government. At the end you get a suggested pick in every race on your ballot: the candidate whose recorded votes and public statements line up with your answers most often, with the evidence under each name.",
+    isnt: "The pick in each race is a suggestion based on one thing: how often a candidate's documented position matches the position you chose. It is not a judgment of character or competence, and it is not an order. You may care about things we did not ask. A candidate with little on record will score low on coverage, not on disagreement, and we say which is which. The final call is yours."
   },
   weights: {
     // keys match about-you question ids; values multiply the listed axes

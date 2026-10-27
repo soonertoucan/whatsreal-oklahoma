@@ -436,3 +436,16 @@ footer .fine { color: var(--ink-3); font-size: 0.86rem; max-width: var(--measure
 .s-them a { color: var(--ink-3); }
 .s-sq { font-size: 0.95rem; }
 .s-foot { font-size: 0.86rem; color: var(--ink-3); max-width: var(--measure); }
+.s-pick { font-size: 0.98rem; background: var(--sky-soft); color: var(--ink); border-left: 4px solid var(--sky); padding: 0.7rem 0.9rem; border-radius: 0 6px 6px 0; max-width: var(--measure); }
+.s-pick b { color: var(--sky); }
+.s-pick.none { background: transparent; border-color: var(--rule); color: var(--ink-3); }
+.s-summary { display: grid; gap: 0.8rem; border: 2px solid var(--sky); border-radius: 10px; padding: 1.1rem 1.2rem; background: var(--paper); }
+.s-summary h3 { font-size: 1.35rem; }
+.s-sumgrid { display: grid; }
+.s-sumrow { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr) minmax(0, 0.9fr); gap: 0.3rem 1rem; padding-block: 0.55rem; border-top: 1px solid var(--rule); font-size: 0.95rem; align-items: baseline; }
+.s-sumrow:first-child { border-top: 0; }
+.s-sumrace { color: var(--ink-2); }
+.s-sumwho { font-weight: 700; color: var(--sky); }
+.s-sumrow.weak .s-sumwho { color: var(--ink-3); font-weight: 600; }
+.s-sumwhy { font-size: 0.86rem; color: var(--ink-3); }
+@media (max-width: 760px) { .s-sumrow { grid-template-columns: 1fr; gap: 0.1rem; } }
